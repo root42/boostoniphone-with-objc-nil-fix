@@ -1,0 +1,768 @@
+diff --git a/boost/accumulators/framework/depends_on.hpp b/boost/accumulators/framework/depends_on.hpp
+index 76087b0..2c2a27b 100644
+--- a/boost/accumulators/framework/depends_on.hpp
++++ b/boost/accumulators/framework/depends_on.hpp
+@@ -186,13 +186,13 @@ namespace boost { namespace accumulators
+         template<typename First, typename Last>
+         struct build_acc_list<First, Last, true>
+         {
+-            typedef fusion::nil type;
++            typedef fusion::nil_ type;
+ 
+             template<typename Args>
+-            static fusion::nil
++            static fusion::nil_
+             call(Args const &, First const&, Last const&)
+             {
+-                return fusion::nil();
++                return fusion::nil_();
+             }
+         };
+ 
+diff --git a/boost/fusion/container/generation/cons_tie.hpp b/boost/fusion/container/generation/cons_tie.hpp
+index 4459e0c..e42b420 100644
+--- a/boost/fusion/container/generation/cons_tie.hpp
++++ b/boost/fusion/container/generation/cons_tie.hpp
+@@ -11,11 +11,11 @@
+ 
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+ 
+     namespace result_of
+     {
+-        template <typename Car, typename Cdr = nil>
++        template <typename Car, typename Cdr = nil_>
+         struct cons_tie
+         {
+             typedef cons<Car&, Cdr> type;
+diff --git a/boost/fusion/container/generation/make_cons.hpp b/boost/fusion/container/generation/make_cons.hpp
+index dcb606d..b11394b 100644
+--- a/boost/fusion/container/generation/make_cons.hpp
++++ b/boost/fusion/container/generation/make_cons.hpp
+@@ -13,11 +13,11 @@
+ 
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+ 
+     namespace result_of
+     {
+-        template <typename Car, typename Cdr = nil>
++        template <typename Car, typename Cdr = nil_>
+         struct make_cons
+         {
+             typedef cons<typename detail::as_fusion_element<Car>::type, Cdr> type;
+diff --git a/boost/fusion/container/list/cons.hpp b/boost/fusion/container/list/cons.hpp
+index e434d5c..51f10d9 100644
+--- a/boost/fusion/container/list/cons.hpp
++++ b/boost/fusion/container/list/cons.hpp
+@@ -34,7 +34,7 @@ namespace boost { namespace fusion
+     struct forward_traversal_tag;
+     struct fusion_sequence_tag;
+ 
+-    struct nil : sequence_base<nil>
++    struct nil_ : sequence_base<nil_>
+     {
+         typedef mpl::int_<0> size;
+         typedef cons_tag fusion_tag;
+@@ -44,10 +44,10 @@ namespace boost { namespace fusion
+         typedef void_ car_type;
+         typedef void_ cdr_type;
+ 
+-        nil() {}
++        nil_() {}
+ 
+         template <typename Iterator>
+-        nil(Iterator const& /*iter*/, mpl::true_ /*this_is_an_iterator*/)
++        nil_(Iterator const& /*iter*/, mpl::true_ /*this_is_an_iterator*/)
+         {}
+ 
+         template <typename Iterator>
+@@ -56,7 +56,7 @@ namespace boost { namespace fusion
+         }
+     };
+ 
+-    template <typename Car, typename Cdr /*= nil*/>
++    template <typename Car, typename Cdr /*= nil_*/>
+     struct cons : sequence_base<cons<Car, Cdr> >
+     {
+         typedef mpl::int_<Cdr::size::value+1> size;
+diff --git a/boost/fusion/container/list/cons_fwd.hpp b/boost/fusion/container/list/cons_fwd.hpp
+index 80bb044..684f02e 100644
+--- a/boost/fusion/container/list/cons_fwd.hpp
++++ b/boost/fusion/container/list/cons_fwd.hpp
+@@ -10,9 +10,9 @@
+ 
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+ 
+-    template <typename Car, typename Cdr = nil>
++    template <typename Car, typename Cdr = nil_>
+     struct cons;
+ }}
+ 
+diff --git a/boost/fusion/container/list/cons_iterator.hpp b/boost/fusion/container/list/cons_iterator.hpp
+index bc4fa09..834651d 100644
+--- a/boost/fusion/container/list/cons_iterator.hpp
++++ b/boost/fusion/container/list/cons_iterator.hpp
+@@ -18,14 +18,14 @@
+ 
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+     struct cons_iterator_tag;
+     struct forward_traversal_tag;
+ 
+     template <typename Cons>
+     struct cons_iterator_identity;
+ 
+-    template <typename Cons = nil>
++    template <typename Cons = nil_>
+     struct cons_iterator : iterator_base<cons_iterator<Cons> >
+     {
+         typedef cons_iterator_tag fusion_tag;
+@@ -49,40 +49,40 @@ namespace boost { namespace fusion
+     {
+         typedef forward_traversal_tag category;
+         typedef cons_iterator_tag fusion_tag;
+-        typedef nil cons_type;
++        typedef nil_ cons_type;
+         typedef cons_iterator_identity<
+-            add_const<nil>::type> 
++            add_const<nil_>::type> 
+         identity;
+         nil_iterator() {}
+-        explicit nil_iterator(nil const&) {}
++        explicit nil_iterator(nil_ const&) {}
+     };
+ 
+     template <>
+-    struct cons_iterator<nil> : nil_iterator 
++    struct cons_iterator<nil_> : nil_iterator 
+     {
+         cons_iterator() {}
+-        explicit cons_iterator(nil const&) {}
++        explicit cons_iterator(nil_ const&) {}
+     };
+ 
+     template <>
+-    struct cons_iterator<nil const> : nil_iterator 
++    struct cons_iterator<nil_ const> : nil_iterator 
+     {
+         cons_iterator() {}
+-        explicit cons_iterator(nil const&) {}
++        explicit cons_iterator(nil_ const&) {}
+     };
+ 
+     template <>
+     struct cons_iterator<list<> > : nil_iterator 
+     {
+         cons_iterator() {}
+-        explicit cons_iterator(nil const&) {}
++        explicit cons_iterator(nil_ const&) {}
+     };
+ 
+     template <>
+     struct cons_iterator<list<> const> : nil_iterator 
+     {
+         cons_iterator() {}
+-        explicit cons_iterator(nil const&) {}
++        explicit cons_iterator(nil_ const&) {}
+     };
+ }}
+ 
+diff --git a/boost/fusion/container/list/detail/begin_impl.hpp b/boost/fusion/container/list/detail/begin_impl.hpp
+index 571e681..27a7342 100644
+--- a/boost/fusion/container/list/detail/begin_impl.hpp
++++ b/boost/fusion/container/list/detail/begin_impl.hpp
+@@ -13,7 +13,7 @@
+ 
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+ 
+     struct cons_tag;
+ 
+diff --git a/boost/fusion/container/list/detail/build_cons.hpp b/boost/fusion/container/list/detail/build_cons.hpp
+index ef48652..725b286 100644
+--- a/boost/fusion/container/list/detail/build_cons.hpp
++++ b/boost/fusion/container/list/detail/build_cons.hpp
+@@ -24,12 +24,12 @@ namespace boost { namespace fusion { namespace detail
+     template <typename First, typename Last>
+     struct build_cons<First, Last, true>
+     {
+-        typedef nil type;
++        typedef nil_ type;
+         
+-        static nil
++        static nil_
+         call(First const&, Last const&)
+         {
+-            return nil();
++            return nil_();
+         }
+     };
+ 
+diff --git a/boost/fusion/container/list/detail/empty_impl.hpp b/boost/fusion/container/list/detail/empty_impl.hpp
+index 5c92c73..2392dd7 100644
+--- a/boost/fusion/container/list/detail/empty_impl.hpp
++++ b/boost/fusion/container/list/detail/empty_impl.hpp
+@@ -13,7 +13,7 @@ namespace boost { namespace fusion
+ {
+     struct cons_tag;
+ 
+-    struct nil;
++    struct nil_;
+ 
+     template <typename Car, typename Cdr>
+     struct cons;
+@@ -28,7 +28,7 @@ namespace boost { namespace fusion
+         {
+             template <typename Sequence>
+             struct apply
+-                : boost::is_convertible<Sequence, nil>
++                : boost::is_convertible<Sequence, nil_>
+             {};
+         };
+     }
+diff --git a/boost/fusion/container/list/detail/end_impl.hpp b/boost/fusion/container/list/detail/end_impl.hpp
+index 3792250..a2eafba 100644
+--- a/boost/fusion/container/list/detail/end_impl.hpp
++++ b/boost/fusion/container/list/detail/end_impl.hpp
+@@ -13,7 +13,7 @@
+ 
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+ 
+     struct cons_tag;
+ 
+@@ -35,7 +35,7 @@ namespace boost { namespace fusion
+             struct apply 
+             {
+                 typedef cons_iterator<
+-                    typename mpl::if_<is_const<Sequence>, nil const, nil>::type>
++                    typename mpl::if_<is_const<Sequence>, nil_ const, nil_>::type>
+                 type;
+     
+                 static type
+diff --git a/boost/fusion/container/list/detail/list_to_cons.hpp b/boost/fusion/container/list/detail/list_to_cons.hpp
+index 4a7dbb8..07c11af 100644
+--- a/boost/fusion/container/list/detail/list_to_cons.hpp
++++ b/boost/fusion/container/list/detail/list_to_cons.hpp
+@@ -18,7 +18,7 @@
+ 
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+     struct void_;
+ }}
+ 
+@@ -61,7 +61,7 @@ namespace boost { namespace fusion { namespace detail
+     template <>
+     struct list_to_cons<BOOST_PP_ENUM(FUSION_MAX_LIST_SIZE, FUSION_VOID, _)>
+     {
+-        typedef nil type;
++        typedef nil_ type;
+     };
+ }}}
+ 
+diff --git a/boost/fusion/container/list/detail/preprocessed/list10.hpp b/boost/fusion/container/list/detail/preprocessed/list10.hpp
+index e233b46..d02ba87 100644
+--- a/boost/fusion/container/list/detail/preprocessed/list10.hpp
++++ b/boost/fusion/container/list/detail/preprocessed/list10.hpp
+@@ -8,7 +8,7 @@
+ ==============================================================================*/
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+     struct void_;
+     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9>
+     struct list
+diff --git a/boost/fusion/container/list/detail/preprocessed/list20.hpp b/boost/fusion/container/list/detail/preprocessed/list20.hpp
+index 405681a..730d1c0 100644
+--- a/boost/fusion/container/list/detail/preprocessed/list20.hpp
++++ b/boost/fusion/container/list/detail/preprocessed/list20.hpp
+@@ -8,7 +8,7 @@
+ ==============================================================================*/
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+     struct void_;
+     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17 , typename T18 , typename T19>
+     struct list
+diff --git a/boost/fusion/container/list/detail/preprocessed/list30.hpp b/boost/fusion/container/list/detail/preprocessed/list30.hpp
+index 841295e..6e6a143 100644
+--- a/boost/fusion/container/list/detail/preprocessed/list30.hpp
++++ b/boost/fusion/container/list/detail/preprocessed/list30.hpp
+@@ -8,7 +8,7 @@
+ ==============================================================================*/
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+     struct void_;
+     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17 , typename T18 , typename T19 , typename T20 , typename T21 , typename T22 , typename T23 , typename T24 , typename T25 , typename T26 , typename T27 , typename T28 , typename T29>
+     struct list
+diff --git a/boost/fusion/container/list/detail/preprocessed/list40.hpp b/boost/fusion/container/list/detail/preprocessed/list40.hpp
+index c486f6b..e4f3b38 100644
+--- a/boost/fusion/container/list/detail/preprocessed/list40.hpp
++++ b/boost/fusion/container/list/detail/preprocessed/list40.hpp
+@@ -8,7 +8,7 @@
+ ==============================================================================*/
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+     struct void_;
+     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17 , typename T18 , typename T19 , typename T20 , typename T21 , typename T22 , typename T23 , typename T24 , typename T25 , typename T26 , typename T27 , typename T28 , typename T29 , typename T30 , typename T31 , typename T32 , typename T33 , typename T34 , typename T35 , typename T36 , typename T37 , typename T38 , typename T39>
+     struct list
+diff --git a/boost/fusion/container/list/detail/preprocessed/list50.hpp b/boost/fusion/container/list/detail/preprocessed/list50.hpp
+index 2126409..fc5231f 100644
+--- a/boost/fusion/container/list/detail/preprocessed/list50.hpp
++++ b/boost/fusion/container/list/detail/preprocessed/list50.hpp
+@@ -8,7 +8,7 @@
+ ==============================================================================*/
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+     struct void_;
+     template <typename T0 , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 , typename T6 , typename T7 , typename T8 , typename T9 , typename T10 , typename T11 , typename T12 , typename T13 , typename T14 , typename T15 , typename T16 , typename T17 , typename T18 , typename T19 , typename T20 , typename T21 , typename T22 , typename T23 , typename T24 , typename T25 , typename T26 , typename T27 , typename T28 , typename T29 , typename T30 , typename T31 , typename T32 , typename T33 , typename T34 , typename T35 , typename T36 , typename T37 , typename T38 , typename T39 , typename T40 , typename T41 , typename T42 , typename T43 , typename T44 , typename T45 , typename T46 , typename T47 , typename T48 , typename T49>
+     struct list
+diff --git a/boost/fusion/container/list/detail/preprocessed/list_to_cons10.hpp b/boost/fusion/container/list/detail/preprocessed/list_to_cons10.hpp
+index a0f01f5..9b9377c 100644
+--- a/boost/fusion/container/list/detail/preprocessed/list_to_cons10.hpp
++++ b/boost/fusion/container/list/detail/preprocessed/list_to_cons10.hpp
+@@ -81,6 +81,6 @@ namespace boost { namespace fusion { namespace detail
+     template <>
+     struct list_to_cons<void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_>
+     {
+-        typedef nil type;
++        typedef nil_ type;
+     };
+ }}}
+diff --git a/boost/fusion/container/list/detail/preprocessed/list_to_cons20.hpp b/boost/fusion/container/list/detail/preprocessed/list_to_cons20.hpp
+index b90b7a7..b142e26 100644
+--- a/boost/fusion/container/list/detail/preprocessed/list_to_cons20.hpp
++++ b/boost/fusion/container/list/detail/preprocessed/list_to_cons20.hpp
+@@ -141,6 +141,6 @@ namespace boost { namespace fusion { namespace detail
+     template <>
+     struct list_to_cons<void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_>
+     {
+-        typedef nil type;
++        typedef nil_ type;
+     };
+ }}}
+diff --git a/boost/fusion/container/list/detail/preprocessed/list_to_cons30.hpp b/boost/fusion/container/list/detail/preprocessed/list_to_cons30.hpp
+index 8b8a046..814b7a4 100644
+--- a/boost/fusion/container/list/detail/preprocessed/list_to_cons30.hpp
++++ b/boost/fusion/container/list/detail/preprocessed/list_to_cons30.hpp
+@@ -201,6 +201,6 @@ namespace boost { namespace fusion { namespace detail
+     template <>
+     struct list_to_cons<void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_>
+     {
+-        typedef nil type;
++        typedef nil_ type;
+     };
+ }}}
+diff --git a/boost/fusion/container/list/detail/preprocessed/list_to_cons40.hpp b/boost/fusion/container/list/detail/preprocessed/list_to_cons40.hpp
+index a435c02..6929148 100644
+--- a/boost/fusion/container/list/detail/preprocessed/list_to_cons40.hpp
++++ b/boost/fusion/container/list/detail/preprocessed/list_to_cons40.hpp
+@@ -261,6 +261,6 @@ namespace boost { namespace fusion { namespace detail
+     template <>
+     struct list_to_cons<void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_>
+     {
+-        typedef nil type;
++        typedef nil_ type;
+     };
+ }}}
+diff --git a/boost/fusion/container/list/detail/preprocessed/list_to_cons50.hpp b/boost/fusion/container/list/detail/preprocessed/list_to_cons50.hpp
+index 7837e9c..1dbef68 100644
+--- a/boost/fusion/container/list/detail/preprocessed/list_to_cons50.hpp
++++ b/boost/fusion/container/list/detail/preprocessed/list_to_cons50.hpp
+@@ -321,6 +321,6 @@ namespace boost { namespace fusion { namespace detail
+     template <>
+     struct list_to_cons<void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_ , void_>
+     {
+-        typedef nil type;
++        typedef nil_ type;
+     };
+ }}}
+diff --git a/boost/fusion/container/list/detail/reverse_cons.hpp b/boost/fusion/container/list/detail/reverse_cons.hpp
+index 59178e8..5083e0c 100644
+--- a/boost/fusion/container/list/detail/reverse_cons.hpp
++++ b/boost/fusion/container/list/detail/reverse_cons.hpp
+@@ -12,7 +12,7 @@
+ namespace boost { namespace fusion { namespace detail
+ {
+     ////////////////////////////////////////////////////////////////////////////
+-    template<typename Cons, typename State = nil>
++    template<typename Cons, typename State = nil_>
+     struct reverse_cons;
+ 
+     template<typename Car, typename Cdr, typename State>
+@@ -29,11 +29,11 @@ namespace boost { namespace fusion { namespace detail
+     };
+ 
+     template<typename State>
+-    struct reverse_cons<nil, State>
++    struct reverse_cons<nil_, State>
+     {
+         typedef State type;
+ 
+-        static State const &call(nil const &, State const &state = State())
++        static State const &call(nil_ const &, State const &state = State())
+         {
+             return state;
+         }
+diff --git a/boost/fusion/container/list/list.hpp b/boost/fusion/container/list/list.hpp
+index 45e2f63..1d90205 100644
+--- a/boost/fusion/container/list/list.hpp
++++ b/boost/fusion/container/list/list.hpp
+@@ -32,7 +32,7 @@
+ 
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+     struct void_;
+ 
+     template <BOOST_PP_ENUM_PARAMS(FUSION_MAX_LIST_SIZE, typename T)>
+diff --git a/boost/fusion/iterator/detail/segmented_equal_to.hpp b/boost/fusion/iterator/detail/segmented_equal_to.hpp
+index 1e4ad26..14982b8 100644
+--- a/boost/fusion/iterator/detail/segmented_equal_to.hpp
++++ b/boost/fusion/iterator/detail/segmented_equal_to.hpp
+@@ -13,7 +13,7 @@
+ 
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+ 
+     namespace detail
+     {
+@@ -32,7 +32,7 @@ namespace boost { namespace fusion
+         {};
+ 
+         template <>
+-        struct segmented_equal_to<fusion::nil, fusion::nil>
++        struct segmented_equal_to<fusion::nil_, fusion::nil_>
+           : mpl::true_
+         {};
+     }
+diff --git a/boost/fusion/iterator/detail/segmented_iterator.hpp b/boost/fusion/iterator/detail/segmented_iterator.hpp
+index ccd45fb..a5cfb45 100644
+--- a/boost/fusion/iterator/detail/segmented_iterator.hpp
++++ b/boost/fusion/iterator/detail/segmented_iterator.hpp
+@@ -19,7 +19,7 @@
+ 
+ namespace boost { namespace fusion
+ {
+-    struct nil;
++    struct nil_;
+ 
+     namespace detail
+     {
+diff --git a/boost/fusion/iterator/detail/segmented_next_impl.hpp b/boost/fusion/iterator/detail/segmented_next_impl.hpp
+index 2a7f6f6..0c5f9f5 100644
+--- a/boost/fusion/iterator/detail/segmented_next_impl.hpp
++++ b/boost/fusion/iterator/detail/segmented_next_impl.hpp
+@@ -83,7 +83,7 @@ namespace boost { namespace fusion
+         //auto segmented_next_impl_recurse3(stack)
+         //{
+         //  if (size(stack) == 1)
+-        //    return cons(iterator_range(end(car(stack)), end(car(stack))), nil);
++        //    return cons(iterator_range(end(car(stack)), end(car(stack))), nil_);
+         //  else
+         //    return segmented_next_impl_recurse(stack.cdr);
+         //}
+diff --git a/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp b/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp
+index 968718e..7f337ce 100644
+--- a/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp
++++ b/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp
+@@ -19,10 +19,10 @@ namespace boost { namespace fusion { namespace detail
+ {
+     //auto segmented_begin( seq )
+     //{
+-    //    return make_segmented_iterator( segmented_begin_impl( seq, nil ) );
++    //    return make_segmented_iterator( segmented_begin_impl( seq, nil_ ) );
+     //}
+ 
+-    template <typename Sequence, typename Nil = fusion::nil>
++    template <typename Sequence, typename Nil = fusion::nil_>
+     struct segmented_begin
+     {
+         typedef
+diff --git a/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp b/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp
+index 469862a..f62c97a 100644
+--- a/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp
++++ b/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp
+@@ -18,7 +18,7 @@ namespace boost { namespace fusion { namespace detail
+     //    return make_segmented_iterator( segmented_end_impl( seq ) );
+     //}
+ 
+-    template <typename Sequence, typename Nil = fusion::nil>
++    template <typename Sequence, typename Nil = fusion::nil_>
+     struct segmented_end
+     {
+         typedef
+diff --git a/boost/fusion/support/segmented_fold_until.hpp b/boost/fusion/support/segmented_fold_until.hpp
+index 6ea58ac..724e2a4 100644
+--- a/boost/fusion/support/segmented_fold_until.hpp
++++ b/boost/fusion/support/segmented_fold_until.hpp
+@@ -20,7 +20,7 @@ namespace boost { namespace fusion
+ {
+     //auto segmented_fold_until(seq, state, fun)
+     //{
+-    //  return first(segmented_fold_until_impl(seq, state, nil, fun));
++    //  return first(segmented_fold_until_impl(seq, state, nil_, fun));
+     //}
+ 
+     namespace result_of
+@@ -32,7 +32,7 @@ namespace boost { namespace fusion
+                 detail::segmented_fold_until_impl<
+                     Sequence
+                   , State
+-                  , fusion::nil
++                  , fusion::nil_
+                   , Fun
+                 >
+             filter;
+@@ -55,7 +55,7 @@ namespace boost { namespace fusion
+             typename result_of::segmented_fold_until<Sequence, State, Fun>::filter
+         filter;
+         
+-        return filter::call(seq, state, fusion::nil(), fun);
++        return filter::call(seq, state, fusion::nil_(), fun);
+     }
+ 
+     template <typename Sequence, typename State, typename Fun>
+@@ -66,7 +66,7 @@ namespace boost { namespace fusion
+             typename result_of::segmented_fold_until<Sequence const, State, Fun>::filter
+         filter;
+         
+-        return filter::call(seq, state, fusion::nil(), fun);
++        return filter::call(seq, state, fusion::nil_(), fun);
+     }
+ }}
+ 
+diff --git a/boost/fusion/view/iterator_range/detail/segmented_iterator_range.hpp b/boost/fusion/view/iterator_range/detail/segmented_iterator_range.hpp
+index e5f5ed0..f711755 100644
+--- a/boost/fusion/view/iterator_range/detail/segmented_iterator_range.hpp
++++ b/boost/fusion/view/iterator_range/detail/segmented_iterator_range.hpp
+@@ -53,7 +53,7 @@ namespace boost { namespace fusion { namespace detail
+     //  switch (size(stack_begin))
+     //  {
+     //  case 1:
+-    //    return nil;
++    //    return nil_;
+     //  case 2:
+     //    // car(cdr(stack_begin)) is a range over values.
+     //    assert(end(front(car(stack_begin))) == end(car(cdr(stack_begin))));
+@@ -188,7 +188,7 @@ namespace boost { namespace fusion { namespace detail
+     template <typename Stack>
+     struct make_segment_sequence_front<Stack, 1>
+     {
+-        typedef typename Stack::cdr_type type; // nil
++        typedef typename Stack::cdr_type type; // nil_
+ 
+         static type call(Stack const &stack)
+         {
+@@ -201,7 +201,7 @@ namespace boost { namespace fusion { namespace detail
+     //  switch (size(stack_end))
+     //  {
+     //  case 1:
+-    //    return nil;
++    //    return nil_;
+     //  case 2:
+     //    // car(cdr(stack_back)) is a range over values.
+     //    assert(end(front(car(stack_end))) == end(car(cdr(stack_end))));
+@@ -331,7 +331,7 @@ namespace boost { namespace fusion { namespace detail
+     template <typename Stack>
+     struct make_segment_sequence_back<Stack, 1>
+     {
+-        typedef typename Stack::cdr_type type; // nil
++        typedef typename Stack::cdr_type type; // nil_
+ 
+         static type call(Stack const& stack)
+         {
+diff --git a/boost/msm/back/state_machine.hpp b/boost/msm/back/state_machine.hpp
+index 7881685..f853817 100644
+--- a/boost/msm/back/state_machine.hpp
++++ b/boost/msm/back/state_machine.hpp
+@@ -1564,7 +1564,7 @@ private:
+      void set_states(Expr const& expr)
+      {
+          ::boost::fusion::for_each( 
+-             ::boost::fusion::as_vector(FoldToList()(expr, boost::fusion::nil())),update_state(this->m_substate_list));
++             ::boost::fusion::as_vector(FoldToList()(expr, boost::fusion::nil_())),update_state(this->m_substate_list));
+      }
+ 
+      // Construct with the default initial states
+diff --git a/boost/spirit/home/support/context.hpp b/boost/spirit/home/support/context.hpp
+index b728b4f..bbf08b0 100644
+--- a/boost/spirit/home/support/context.hpp
++++ b/boost/spirit/home/support/context.hpp
+@@ -98,7 +98,7 @@ namespace boost { namespace spirit
+         typedef Locals locals_type;
+ 
+         context(typename Attributes::car_type attribute)
+-          : attributes(attribute, fusion::nil()), locals() {}
++          : attributes(attribute, fusion::nil_()), locals() {}
+ 
+         template <typename Args, typename Context>
+         context(
+diff --git a/boost/spirit/home/support/detail/make_cons.hpp b/boost/spirit/home/support/detail/make_cons.hpp
+index cbbb73b..e031dc6 100644
+--- a/boost/spirit/home/support/detail/make_cons.hpp
++++ b/boost/spirit/home/support/detail/make_cons.hpp
+@@ -42,7 +42,7 @@ namespace boost { namespace spirit { namespace detail
+ 
+     namespace result_of
+     {
+-        template <typename Car, typename Cdr = fusion::nil>
++        template <typename Car, typename Cdr = fusion::nil_>
+         struct make_cons
+         {
+             typedef typename as_meta_element<Car>::type car_type;
+diff --git a/boost/spirit/home/support/make_component.hpp b/boost/spirit/home/support/make_component.hpp
+index 04a7437..91a1d4d 100644
+--- a/boost/spirit/home/support/make_component.hpp
++++ b/boost/spirit/home/support/make_component.hpp
+@@ -258,7 +258,7 @@ namespace boost { namespace spirit { namespace detail
+             typedef typename
+                 proto::reverse_fold_tree<
+                     proto::_
+-                  , proto::make<fusion::nil>
++                  , proto::make<fusion::nil_>
+                   , make_binary_helper<Grammar>
+                 >::template impl<Expr, State, Data>
+             reverse_fold_tree;
+diff --git a/boost/xpressive/detail/static/grammar.hpp b/boost/xpressive/detail/static/grammar.hpp
+index 82d1adc..745088f 100644
+--- a/boost/xpressive/detail/static/grammar.hpp
++++ b/boost/xpressive/detail/static/grammar.hpp
+@@ -200,7 +200,7 @@ namespace boost { namespace xpressive
+                     bitwise_or<Gram, Gram>
+                   , in_sequence<
+                         as_alternate_matcher<
+-                            reverse_fold_tree<_, make<fusion::nil>, in_alternate_list<Gram> >
++                            reverse_fold_tree<_, make<fusion::nil_>, in_alternate_list<Gram> >
+                         >
+                     >
+                 >
+diff --git a/boost/xpressive/detail/static/transforms/as_alternate.hpp b/boost/xpressive/detail/static/transforms/as_alternate.hpp
+index 521bb86..cfdec31 100644
+--- a/boost/xpressive/detail/static/transforms/as_alternate.hpp
++++ b/boost/xpressive/detail/static/transforms/as_alternate.hpp
+@@ -44,14 +44,14 @@ namespace boost { namespace xpressive
+         };
+ 
+         template<typename Head>
+-        struct alternates_list<Head, fusion::nil>
+-          : fusion::cons<Head, fusion::nil>
++        struct alternates_list<Head, fusion::nil_>
++          : fusion::cons<Head, fusion::nil_>
+         {
+             BOOST_STATIC_CONSTANT(std::size_t, width = Head::width);
+             BOOST_STATIC_CONSTANT(bool, pure = Head::pure);
+ 
+-            alternates_list(Head const &head, fusion::nil const &tail)
+-              : fusion::cons<Head, fusion::nil>(head, tail)
++            alternates_list(Head const &head, fusion::nil_ const &tail)
++              : fusion::cons<Head, fusion::nil_>(head, tail)
+             {
+             }
+         };
+diff --git a/libs/function_types/example/interpreter.hpp b/libs/function_types/example/interpreter.hpp
+index 72cd78b..fe35eb9 100644
+--- a/libs/function_types/example/interpreter.hpp
++++ b/libs/function_types/example/interpreter.hpp
+@@ -158,7 +158,7 @@ namespace example
+   {
+     // instantiate and store the invoker by name
+     this->map_invokers[name] = boost::bind(
+-        & invoker<Function>::template apply<fusion::nil>, f,_1,fusion::nil() );
++        & invoker<Function>::template apply<fusion::nil_>, f,_1,fusion::nil_() );
+   }
+ 
+ 
+diff --git a/libs/fusion/test/sequence/construction.hpp b/libs/fusion/test/sequence/construction.hpp
+index 380a9ee..d028869 100644
+--- a/libs/fusion/test/sequence/construction.hpp
++++ b/libs/fusion/test/sequence/construction.hpp
+@@ -53,7 +53,7 @@ test()
+     using namespace boost::fusion;
+     using namespace test_detail;
+ 
+-    nil empty;
++    nil_ empty;
+ 
+     FUSION_SEQUENCE<> empty0;
+ 
+diff --git a/libs/fusion/test/sequence/tree.hpp b/libs/fusion/test/sequence/tree.hpp
+index a345a8f..59dcb81 100644
+--- a/libs/fusion/test/sequence/tree.hpp
++++ b/libs/fusion/test/sequence/tree.hpp
+@@ -26,7 +26,7 @@ namespace boost { namespace fusion
+ {
+    struct tree_tag;
+ 
+-   template <typename Data, typename Left = nil, typename Right = nil>
++   template <typename Data, typename Left = nil_, typename Right = nil_>
+    struct tree
+      : sequence_base<tree<Data, Left, Right> >
+    {
+diff --git a/libs/proto/test/examples.cpp b/libs/proto/test/examples.cpp
+index 692f882..b47bf75 100644
+--- a/libs/proto/test/examples.cpp
++++ b/libs/proto/test/examples.cpp
+@@ -188,7 +188,7 @@ struct ArgsAsList
+             proto::_pop_front(_)
+           /*<< `nil` is the initial state used by the `reverse_fold<>`
+           transform. >>*/
+-          , fusion::nil()
++          , fusion::nil_()
+           /*<< Put the rest of the function arguments in a fusion cons
+           list. >>*/
+           , fusion::cons<proto::_value, proto::_state>(proto::_value, proto::_state)
+@@ -201,7 +201,7 @@ struct ArgsAsList
+ // This transform matches expressions of the form (_1=1,'a',"b")
+ // (note the use of the comma operator) and transforms it into a
+ // Fusion cons list of their arguments. In this case, the result
+-// would be cons(1, cons('a', cons("b", nil()))).
++// would be cons(1, cons('a', cons("b", nil_()))).
+ struct FoldTreeToList
+   : proto::or_<
+         // This grammar describes what counts as the terminals in expressions
+@@ -218,7 +218,7 @@ struct FoldTreeToList
+           /*<< Fold all terminals that are separated by commas into a Fusion cons list. >>*/
+           , proto::reverse_fold_tree<
+                 _
+-              , fusion::nil()
++              , fusion::nil_()
+               , fusion::cons<FoldTreeToList, proto::_state>(FoldTreeToList, proto::_state)
+             >
+         >
+@@ -446,7 +446,7 @@ void test_examples()
+     BOOST_CHECK_EQUAL(2, CalcArity()( (_2 - _1) / _2 * 100, i, i));
+ 
+     using boost::fusion::cons;
+-    using boost::fusion::nil;
++    using boost::fusion::nil_;
+     cons<int, cons<char, cons<std::string> > > args(ArgsAsList()( _1(1, 'a', std::string("b")), i, i ));
+     BOOST_CHECK_EQUAL(args.car, 1);
+     BOOST_CHECK_EQUAL(args.cdr.car, 'a');
