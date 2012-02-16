@@ -104,6 +104,15 @@ unpackBoost()
 
 #===============================================================================
 
+patchBoost()
+{
+    echo Patching boost...
+    ( cd $BOOST_SRC; patch -p1 < $TARBALLDIR/fusion_nil_.diff; patch -p1 < $TARBALLDIR/fusion_nil_2.diff )
+    doneSection
+}
+
+#===============================================================================
+
 writeBjamUserConfig()
 {
     # You need to do this to point bjam at the right compiler
@@ -312,6 +321,7 @@ case $BOOST_VERSION in
     1_48_0 )
         cleanEverythingReadyToStart
         unpackBoost
+        patchBoost
         inventMissingHeaders
         writeBjamUserConfig
         bootstrapBoost
