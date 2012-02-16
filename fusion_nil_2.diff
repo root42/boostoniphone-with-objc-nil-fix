@@ -5,8 +5,8 @@ diff -ur a/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp b/boost/fu
      //    return make_segmented_iterator( segmented_begin_impl( seq, nil ) );
      //}
  
--    template <typename Sequence, typename Nil = fusion::nil>
-+    template <typename Sequence, typename Nil_ = fusion::nil>
+-    template <typename Sequence, typename Nil = fusion::nil_>
++    template <typename Sequence, typename Nil_ = fusion::nil_>
      struct segmented_begin
      {
          typedef
@@ -24,7 +24,6 @@ diff -ur a/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp b/boost/fu
          }
      };
  
-Only in b/boost/fusion/sequence/intrinsic/detail: segmented_begin.hpp~
 diff -ur a/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp b/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp
 --- a/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp	2011-09-09 05:27:28.000000000 +0200
 +++ b/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp	2012-02-16 16:51:17.000000000 +0100
@@ -32,8 +31,8 @@ diff -ur a/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp b/boost/fusi
      //    return make_segmented_iterator( segmented_end_impl( seq ) );
      //}
  
--    template <typename Sequence, typename Nil = fusion::nil>
-+    template <typename Sequence, typename Nil_ = fusion::nil>
+-    template <typename Sequence, typename Nil = fusion::nil_>
++    template <typename Sequence, typename Nil_ = fusion::nil_>
      struct segmented_end
      {
          typedef
@@ -51,4 +50,3 @@ diff -ur a/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp b/boost/fusi
          }
      };
  
-Only in b/boost/fusion/sequence/intrinsic/detail: segmented_end.hpp~
