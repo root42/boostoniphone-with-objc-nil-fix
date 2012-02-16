@@ -1,0 +1,54 @@
+diff -ur a/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp b/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp
+--- a/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp	2011-09-09 05:27:28.000000000 +0200
++++ b/boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp	2012-02-16 16:51:04.000000000 +0100
+@@ -22,19 +22,19 @@
+     //    return make_segmented_iterator( segmented_begin_impl( seq, nil ) );
+     //}
+ 
+-    template <typename Sequence, typename Nil = fusion::nil>
++    template <typename Sequence, typename Nil_ = fusion::nil>
+     struct segmented_begin
+     {
+         typedef
+             segmented_iterator<
+-                typename segmented_begin_impl<Sequence, Nil>::type
++                typename segmented_begin_impl<Sequence, Nil_>::type
+             >
+         type;
+ 
+         static type call(Sequence& seq)
+         {
+             return type(
+-                segmented_begin_impl<Sequence, Nil>::call(seq, Nil()));
++                segmented_begin_impl<Sequence, Nil_>::call(seq, Nil_()));
+         }
+     };
+ 
+Only in b/boost/fusion/sequence/intrinsic/detail: segmented_begin.hpp~
+diff -ur a/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp b/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp
+--- a/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp	2011-09-09 05:27:28.000000000 +0200
++++ b/boost/fusion/sequence/intrinsic/detail/segmented_end.hpp	2012-02-16 16:51:17.000000000 +0100
+@@ -18,19 +18,19 @@
+     //    return make_segmented_iterator( segmented_end_impl( seq ) );
+     //}
+ 
+-    template <typename Sequence, typename Nil = fusion::nil>
++    template <typename Sequence, typename Nil_ = fusion::nil>
+     struct segmented_end
+     {
+         typedef
+             segmented_iterator<
+-                typename segmented_end_impl<Sequence, Nil>::type
++                typename segmented_end_impl<Sequence, Nil_>::type
+             >
+         type;
+ 
+         static type call(Sequence & seq)
+         {
+             return type(
+-                segmented_end_impl<Sequence, Nil>::call(seq, Nil()));
++                segmented_end_impl<Sequence, Nil_>::call(seq, Nil_()));
+         }
+     };
+ 
+Only in b/boost/fusion/sequence/intrinsic/detail: segmented_end.hpp~
