@@ -20,7 +20,7 @@
 #===============================================================================
 
 : ${BOOST_VERSION:=1_48_0}
-: ${BOOST_LIBS:="thread signals filesystem regex program_options system graph date_time"}
+: ${BOOST_LIBS:="iostreams thread filesystem system"}
 : ${IPHONE_SDKVERSION:=5.0}
 : ${EXTRA_CPPFLAGS:="-DBOOST_AC_USE_PTHREADS -DBOOST_SP_USE_PTHREADS"}
 
