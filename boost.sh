@@ -21,7 +21,7 @@
 
 : ${BOOST_VERSION:=1_48_0}
 : ${BOOST_LIBS:="thread signals filesystem regex program_options system graph date_time"}
-: ${IPHONE_SDKVERSION:=5.0}
+: ${IPHONE_SDKVERSION:=5.1}
 : ${EXTRA_CPPFLAGS:="-DBOOST_AC_USE_PTHREADS -DBOOST_SP_USE_PTHREADS"}
 
 # The EXTRA_CPPFLAGS definition works around a thread race issue in
@@ -43,8 +43,8 @@ BOOST_TARBALL=$TARBALLDIR/boost_$BOOST_VERSION.tar.bz2
 
 #===============================================================================
 
-ARM_DEV_DIR=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/
-SIM_DEV_DIR=/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/
+ARM_DEV_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/
+SIM_DEV_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/
 
 ARM_COMBINED_LIB=$BUILDDIR/lib_boost_arm.a
 SIM_COMBINED_LIB=$BUILDDIR/lib_boost_x86.a
@@ -122,12 +122,12 @@ writeBjamUserConfig()
     #cat > ~/user-config.jam <<EOF
     cat >> $BOOST_SRC/tools/build/v2/user-config.jam <<EOF
 using darwin : 5.0~iphone
-   : /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/clang -arch armv7 -mthumb -fvisibility=hidden -fvisibility-inlines-hidden $EXTRA_CPPFLAGS
+   : /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/clang -arch armv7 -mthumb -fvisibility=hidden -fvisibility-inlines-hidden $EXTRA_CPPFLAGS
    : <striper>
    : <architecture>arm <target-os>iphone
    ;
 using darwin : 5.0~iphonesim
-   : /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/clang -arch i386 -fvisibility=hidden -fvisibility-inlines-hidden $EXTRA_CPPFLAGS
+   : /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/clang -arch i386 -fvisibility=hidden -fvisibility-inlines-hidden $EXTRA_CPPFLAGS
    : <striper>
    : <architecture>x86 <target-os>iphone
    ;
@@ -143,7 +143,7 @@ inventMissingHeaders()
     # They are supported on the device, so we copy them from x86 SDK to a staging area
     # to use them on ARM, too.
     echo Invent missing headers
-    cp /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator${IPHONE_SDKVERSION}.sdk/usr/include/{crt_externs,bzlib}.h $BOOST_SRC
+    cp /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator${IPHONE_SDKVERSION}.sdk/usr/include/{crt_externs,bzlib}.h $BOOST_SRC
 }
 
 #===============================================================================
