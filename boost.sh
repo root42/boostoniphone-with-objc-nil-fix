@@ -107,7 +107,11 @@ unpackBoost()
 patchBoost()
 {
     echo Patching boost...
-    ( cd $BOOST_SRC; patch -p1 < $TARBALLDIR/fusion_nil_.diff; patch -p1 < $TARBALLDIR/fusion_nil_2.diff )
+    ( cd $BOOST_SRC; 
+        patch -p1 < $TARBALLDIR/fusion_nil_.diff;
+        patch -p1 < $TARBALLDIR/fusion_nil_2.diff;
+        patch -p1 < $TARBALLDIR/xcode_43.diff
+    )
     doneSection
 }
 
