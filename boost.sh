@@ -1,3 +1,4 @@
+#!/bin/bash
 #===============================================================================
 # Filename:  boost.sh
 # Author:    Pete Goodliffe
@@ -19,7 +20,7 @@
 # same directory as this script, and run "./boost.sh". Grab a cuppa. And voila.
 #===============================================================================
 
-: ${BOOST_VERSION:=1_48_0}
+: ${BOOST_VERSION:=1_49_0}
 : ${BOOST_LIBS:="iostreams thread filesystem system"}
 : ${IPHONE_SDKVERSION:=5.1}
 : ${EXTRA_CPPFLAGS:="-DBOOST_AC_USE_PTHREADS -DBOOST_SP_USE_PTHREADS"}
@@ -163,7 +164,7 @@ bootstrapBoost()
 
 #===============================================================================
 
-buildBoostForiPhoneOS_1_48_0()
+buildBoostForiPhoneOS_1_49_0()
 {
     cd $BOOST_SRC
     
@@ -322,14 +323,14 @@ EOF
 mkdir -p $BUILDDIR
 
 case $BOOST_VERSION in
-    1_48_0 )
+    1_49_0 )
         cleanEverythingReadyToStart
         unpackBoost
         patchBoost
         inventMissingHeaders
         writeBjamUserConfig
         bootstrapBoost
-        buildBoostForiPhoneOS_1_48_0
+        buildBoostForiPhoneOS_1_49_0
         scrunchAllLibsTogetherInOneLibPerPlatform
         lipoAllBoostLibraries
         buildFramework
